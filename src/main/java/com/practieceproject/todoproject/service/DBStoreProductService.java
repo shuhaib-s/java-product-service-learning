@@ -26,12 +26,12 @@ public class DBStoreProductService implements ProductService {
     }
 
     @Override
-    public Product updateProduct() {
+    public Product updateProduct(Long id,String title, String description, Double price, String imageUrl, Category category) {
         return null;
     }
 
     @Override
-    public String deleteProduct() {
+    public String deleteProduct(Long id) {
         return "";
     }
 }

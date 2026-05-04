@@ -1,8 +1,12 @@
 package com.practieceproject.todoproject.controller;
 
+import com.practieceproject.todoproject.Dto.ErrorDto;
+import com.practieceproject.todoproject.Expections.ProductNotFoundException;
 import com.practieceproject.todoproject.model.Product;
 import com.practieceproject.todoproject.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +27,13 @@ public class ProductController {
     }
 
     @GetMapping("product/{id}")
-    public Product getProduct(@PathVariable("id") Long id){
-        return this.productService.getProduct(id);
+    public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) throws ProductNotFoundException {
+      Product p = this.productService.getProduct(id);
+        ResponseEntity<Product> response = new ResponseEntity<>(
+                p, HttpStatus.OK
+        );
+        return  response;
+
     }
 
     @GetMapping("/product")
@@ -33,12 +42,32 @@ public class ProductController {
     }
 
     @PutMapping("product/{id}")
-    public void updateProduct(@PathVariable("id") Long id){
-      System.out.println("histted updated" );
+    public Product updateProduct(@PathVariable("id") Long id, @RequestBody Product p){
+
+        return this.productService.updateProduct(
+                p.getId(),
+                p.getTitle(),
+                p.getDescription(),
+                p.getPrice(),
+                p.getImageUrl(),
+                p.getCategory()
+        );
+
    }
     @DeleteMapping("product/{id}")
-    public void deleteProduct(@PathVariable("id") Long id){
-        System.out.println("histted delete" );
+    public String deleteProduct(@PathVariable("id") Long id){
+       return this.productService.deleteProduct(id);
+
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleProductNotfoudnExecption(Exception e){
+        ErrorDto error = new ErrorDto();
+        error.setMessage(e.getMessage());
+        ResponseEntity<ErrorDto> err = new ResponseEntity<>(
+                error, HttpStatus.NOT_FOUND
+        );
+        return  err;
 
     }
 }
