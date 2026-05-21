@@ -1,11 +1,14 @@
 package com.practieceproject.todoproject.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import lombok.*;
 
 @Getter
 @Setter
-public class Category {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Entity
+public class Category extends BaseModel {
     private String name;
-    private String description;
 }

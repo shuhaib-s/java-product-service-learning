@@ -14,7 +14,6 @@ package com.practieceproject.todoproject.service;
  import java.util.List;
  import java.util.Random;
 
-@Service
 public class FakeStoreProductService implements ProductService {
     private RestTemplate restTemplate;
     private String baseUrl = "https://fakestoreapi.com/products";
